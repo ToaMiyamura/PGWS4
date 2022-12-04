@@ -25,7 +25,7 @@ using namespace DirectX;
 
 
 
-void DebugOutputFormatString(const char* format, ...) 
+void DebugOutputFormatString(const char* format, ...)
 {
 #ifdef _DEBUG
 	va_list valist;
@@ -1153,13 +1153,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	// マスクは0
 	descHeapDesc.NodeMask = 0;
-	// SRV１つとCBV１つ
-	descHeapDesc.NumDescriptors = 2;
+	// CBV１つ
+	descHeapDesc.NumDescriptors = 1;
 	// シェーダーリソースビュー用
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	// 生成
 	result = _dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&basicDescHeap));
- 
+
 	//デスクリプタの先頭ハンドルを取得
 	auto basicHeapHandle = basicDescHeap->GetCPUDescriptorHandleForHeapStart();
 
@@ -1216,7 +1216,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		_cmdList->SetGraphicsRootSignature(rootsignature);
 		_cmdList->SetDescriptorHeaps(1, &basicDescHeap);
-		
+
 		_cmdList->SetGraphicsRootDescriptorTable(0,
 			basicDescHeap->GetGPUDescriptorHandleForHeapStart());
 
@@ -1230,10 +1230,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		_cmdList->RSSetScissorRects(1, &scissorrect);
 
 		_cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		
+
 		_cmdList->IASetVertexBuffers(0, 1,&vbView);//０＝頂点ビューの数、１＝スロット番号
 		_cmdList->IASetIndexBuffer(&ibView);
-		
+
 		_cmdList->SetDescriptorHeaps(1, &materialDescHeap);
 		auto materialH = materialDescHeap->
 			GetGPUDescriptorHandleForHeapStart();//ヒープ先頭
@@ -1287,3 +1287,4 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	return 0;
 }
 
+	
